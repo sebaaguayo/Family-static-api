@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, url_for
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from datastructures import FamilyStructure
+import json
 #from models import Person
 
 app = Flask(__name__)
@@ -37,6 +38,18 @@ def handle_hello():
 
 
     return jsonify(response_body), 200
+
+@app.route('/member', methods=['POST'])
+def add_new_members():
+    member = request.data
+    member = json.loads(member) 
+    return jsonify(jackson_family.add_member(member)), 200
+
+@app.route('/member/<int:id>', methods=['DELETE'])
+def delete_todo(id):
+    print("This is the position to delete: ",id)
+    return jsonify(jackson_family.delete_member(id)), 200
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
